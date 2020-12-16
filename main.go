@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -36,6 +37,18 @@ func returnSingleDish(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func createNewDish(w http.ResponseWriter, r *http.Request) {
+	// get the body of our POST request
+	// return the string response containing the request body
+	reqBody, _ := ioutil.ReadAll(r.Body)
+
+	var dish Dish
+	json.Unmarshal(reqBody, &dish)
+	Dishes = append(Dishes, dish)
+
+	json.NewEncoder(w).Encode(dish)
+}
+
 func homePage(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Welcome to the HomePage!")
 	fmt.Println("Endpoint Hit: homePage")
@@ -47,6 +60,7 @@ func handleRequests() {
 	// replace http.HandleFunc with myRouter.HandleFunc
 	myRouter.HandleFunc("/", homePage)
 	myRouter.HandleFunc("/dishes", returnAllDishes)
+	myRouter.HandleFunc("/dish", createNewDish).Methods("POST")
 	myRouter.HandleFunc("/dish/{id}", returnSingleDish)
 
 	log.Fatal(http.ListenAndServe(":10000", myRouter))
