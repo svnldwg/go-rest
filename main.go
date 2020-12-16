@@ -49,6 +49,18 @@ func createNewDish(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(dish)
 }
 
+func deleteDish(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	for index, dish := range Dishes {
+		if dish.Id == id {
+			// updates our Dishes array to remove the dish
+			Dishes = append(Dishes[:index], Dishes[index+1:]...)
+		}
+	}
+}
+
 func homePage(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Welcome to the HomePage!")
 	fmt.Println("Endpoint Hit: homePage")
@@ -61,6 +73,7 @@ func handleRequests() {
 	myRouter.HandleFunc("/", homePage)
 	myRouter.HandleFunc("/dishes", returnAllDishes)
 	myRouter.HandleFunc("/dish", createNewDish).Methods("POST")
+	myRouter.HandleFunc("/dish/{id}", deleteDish).Methods("DELETE")
 	myRouter.HandleFunc("/dish/{id}", returnSingleDish)
 
 	log.Fatal(http.ListenAndServe(":10000", myRouter))

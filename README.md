@@ -18,3 +18,4 @@ Endpoints:
 - GET http://localhost:10000/dishes
 - GET http://localhost:10000/dish/1
 - POST http://localhost:10000/dish
+- DELETE http://localhost:10000/dish/1
