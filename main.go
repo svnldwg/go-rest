@@ -49,6 +49,25 @@ func createNewDish(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(dish)
 }
 
+func updateDish(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	reqBody, _ := ioutil.ReadAll(r.Body)
+
+	var dishUpdate Dish
+	json.Unmarshal(reqBody, &dishUpdate)
+
+	for index, dish := range Dishes {
+		if dish.Id == id {
+			Dishes[index].Title = dishUpdate.Title
+			Dishes[index].Desc = dishUpdate.Desc
+			dishUpdate = Dishes[index]
+		}
+	}
+
+	json.NewEncoder(w).Encode(dishUpdate)
+}
+
 func deleteDish(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
@@ -73,6 +92,7 @@ func handleRequests() {
 	myRouter.HandleFunc("/", homePage)
 	myRouter.HandleFunc("/dishes", returnAllDishes)
 	myRouter.HandleFunc("/dish", createNewDish).Methods("POST")
+	myRouter.HandleFunc("/dish/{id}", updateDish).Methods("PUT")
 	myRouter.HandleFunc("/dish/{id}", deleteDish).Methods("DELETE")
 	myRouter.HandleFunc("/dish/{id}", returnSingleDish)
 
