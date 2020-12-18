@@ -1,15 +1,12 @@
 # GO-REST
 
-## Install package
+## Build
 
-`export GOPATH=~/go`
-
-`go get github.com/gorilla/mux`
+`make build`
 
 ## Run
 
-Start web server:
-`go run main.go`
+`make run`
 
 Access web server:
 http://localhost:10000/
