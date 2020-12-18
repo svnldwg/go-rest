@@ -6,3 +6,12 @@ run:
 
 run-detached:
 	docker run -p 10000:10000 -d go-rest
+
+start:
+	docker-compose up -d
+
+stop:
+	docker-compose stop
+
+down:
+	docker-compose down
