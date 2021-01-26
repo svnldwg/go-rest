@@ -1,9 +1,19 @@
 version: '3'
 
 services:
-  rest:
+  go-rest:
     build:
       context: .
     tty: true
     ports:
       - "10000:10000"
+  go-rest-db:
+    image: mysql:8.0
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpw
+      MYSQL_DATABASE: go-rest
+      MYSQL_USER: go-rest
+      MYSQL_PASSWORD: pass

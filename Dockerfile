@@ -7,7 +7,7 @@ ADD . /app
 
 WORKDIR /app
 
-RUN go get github.com/gorilla/mux
+RUN go get github.com/gorilla/mux && go get github.com/go-sql-driver/mysql
 RUN go build -o main .
 
 EXPOSE 10000

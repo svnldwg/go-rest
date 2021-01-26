@@ -1,12 +1,14 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
 
@@ -22,7 +24,14 @@ type Dish struct {
 var Dishes []Dish
 
 func returnAllDishes(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Endpoint Hit: returnAllDishes")
+	fmt.Println("Establish DB Connection")
+
+	db, err := sql.Open("mysql", "go-rest:pass@tcp(127.0.0.1:3306)/go-rest")
+	if err != nil {
+		panic(err.Error())
+	}
+	defer db.Close()
+
 	json.NewEncoder(w).Encode(Dishes)
 }
 
