@@ -6,7 +6,7 @@
 
 ## Run
 
-`make run`
+`make start`
 
 Access web server:
 http://localhost:10000/
